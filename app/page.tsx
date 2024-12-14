@@ -44,35 +44,43 @@ export default function Home() {
   };
 
   return (
-    <main>
-      <div className='fixed inset-y-1/3 inset-x-0 flex space-x-4'>
-        <div className='flex-1'>
-          <h1 className='text-3xl w-full'>Handwriting Recognition</h1>
-          <input type="file" accept="image/*" onChange={handleFileUpload} />
+    <main className="min-h-screen flex items-center justify-center">
+      <div className="w-11/12 max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-8 p-6 bg-white shadow-lg rounded-lg">
+        {/* Left Column */}
+        <div className="flex flex-col items-center">
+          <h1 className="text-3xl font-semibold text-center mb-4">
+            Handwriting Recognition
+          </h1>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleFileUpload}
+            className="mb-4"
+          />
         </div>
-
-        <div className='flex-1'>
-          {/* Image Preview */}
+  
+        {/* Right Column */}
+        <div className="flex flex-col items-center">
           {preview && (
-              <div>
-                <h2>Image Preview</h2>
-                <img
-                  src={preview}
-                  alt="Preview"
-                  className='max-w-full max-h-[300px] mb-5 border border-gray-300 rounded'
-                />
-              </div>
-            )}
-          {loading && <p>Processing...</p>}
-          {error && <p className="text-red-500">{error}</p>}
-          {extractedText && (
-            <div>
-              <h2>Recognized Text</h2>
-              <pre>{extractedText}</pre>
+            <div className="mb-4">
+              <h2 className="text-xl font-medium mb-2">Image Preview</h2>
+              <img
+                src={preview}
+                alt="Preview"
+                className="max-w-full max-h-[300px] border border-gray-300 rounded"
+              />
             </div>
           )}
-        </div>  
+          {loading && <p className="text-blue-500">Processing...</p>}
+          {error && <p className="text-red-500">{error}</p>}
+          {extractedText && (
+            <div className="mt-4">
+              <h2 className="text-xl font-medium mb-2">Recognized Text</h2>
+              <pre className="bg-gray-100 p-4 rounded-md">{extractedText}</pre>
+            </div>
+          )}
+        </div>
       </div>
     </main>
-  );
+  );  
 }

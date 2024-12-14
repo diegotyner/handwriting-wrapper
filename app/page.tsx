@@ -44,33 +44,35 @@ export default function Home() {
   };
 
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-    <h1>Handwriting Recognition</h1>
-    <input type="file" accept="image/*" onChange={handleFileUpload} />
-    {/* Image Preview */}
-    {preview && (
-        <div>
-          <h2>Image Preview</h2>
-          <img
-            src={preview}
-            alt="Preview"
-            style={{
-              maxWidth: '100%',
-              maxHeight: '300px',
-              marginBottom: '20px',
-              border: '1px solid #ccc',
-            }}
-          />
+    <main>
+      <div className='fixed inset-y-1/3 inset-x-0 flex space-x-4'>
+        <div className='flex-1'>
+          <h1 className='text-3xl w-full'>Handwriting Recognition</h1>
+          <input type="file" accept="image/*" onChange={handleFileUpload} />
         </div>
-      )}
-    {loading && <p>Processing...</p>}
-    {error && <p style={{ color: 'red' }}>{error}</p>}
-    {extractedText && (
-      <div>
-        <h2>Recognized Text</h2>
-        <pre>{extractedText}</pre>
+
+        <div className='flex-1'>
+          {/* Image Preview */}
+          {preview && (
+              <div>
+                <h2>Image Preview</h2>
+                <img
+                  src={preview}
+                  alt="Preview"
+                  className='max-w-full max-h-[300px] mb-5 border border-gray-300 rounded'
+                />
+              </div>
+            )}
+          {loading && <p>Processing...</p>}
+          {error && <p className="text-red-500">{error}</p>}
+          {extractedText && (
+            <div>
+              <h2>Recognized Text</h2>
+              <pre>{extractedText}</pre>
+            </div>
+          )}
+        </div>  
       </div>
-    )}
-  </div>
+    </main>
   );
 }

@@ -1,8 +1,15 @@
 import { NextResponse } from 'next/server';
 import sharp from 'sharp';
 
+interface ParsedResult {
+  ParsedText: string;
+}
 
-export async function POST(request) {
+interface OcrResult {
+  ParsedResults: ParsedResult[];
+}
+
+export async function POST(request: Request) {
   try {
     const contentType = request.headers.get('content-type') || '';
     if (!contentType.includes('multipart/form-data')) {
@@ -28,6 +35,7 @@ export async function POST(request) {
     const ocrApiUrl = 'https://api.ocr.space/parse/image';
     
     const formData = new FormData();
+    if (!API_KEY) { throw Error("No Key Configure") };
     formData.append('apikey', API_KEY);
     formData.append('language', 'eng');
     formData.append('scale', 'true'); 
@@ -43,7 +51,7 @@ export async function POST(request) {
       console.error('OCR.space API error:', await ocrResponse.text());
       return new NextResponse('Failed to process the image', { status: 500 });
     }
-    const ocrResult = await ocrResponse.json();
+    const ocrResult: OcrResult = await ocrResponse.json();
     console.log(ocrResult)
 
     

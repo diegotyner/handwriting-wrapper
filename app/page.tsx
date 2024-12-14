@@ -6,10 +6,14 @@ export default function Home() {
   const [extractedText, setExtractedText] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [preview, setPreview] = useState<string | null>(null);
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
+
+    const previewUrl = URL.createObjectURL(file);
+    setPreview(previewUrl);
 
     const formData = new FormData();
     formData.append('file', file);
@@ -43,6 +47,22 @@ export default function Home() {
     <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
     <h1>Handwriting Recognition</h1>
     <input type="file" accept="image/*" onChange={handleFileUpload} />
+    {/* Image Preview */}
+    {preview && (
+        <div>
+          <h2>Image Preview</h2>
+          <img
+            src={preview}
+            alt="Preview"
+            style={{
+              maxWidth: '100%',
+              maxHeight: '300px',
+              marginBottom: '20px',
+              border: '1px solid #ccc',
+            }}
+          />
+        </div>
+      )}
     {loading && <p>Processing...</p>}
     {error && <p style={{ color: 'red' }}>{error}</p>}
     {extractedText && (

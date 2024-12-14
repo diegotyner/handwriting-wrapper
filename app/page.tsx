@@ -71,7 +71,7 @@ export default function Home() {
               />
             </div>
           )}
-          {loading && <p className="text-blue-500">Processing...</p>}
+          {loading && <p>Processing...</p>}
           {error && <p className="text-red-500">{error}</p>}
           {extractedText && (
             <div className="mt-4">

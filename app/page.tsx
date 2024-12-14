@@ -57,6 +57,14 @@ export default function Home() {
             onChange={handleFileUpload}
             className="mb-4"
           />
+          {loading && <p>Processing...</p>}
+            {error && <p className="text-red-500">{error}</p>}
+            {extractedText && (
+              <div className="mt-4">
+                <h2 className="text-xl font-medium mb-2">Recognized Text</h2>
+                <pre className="bg-gray-100 p-4 rounded-md">{extractedText}</pre>
+              </div>
+          )}
         </div>
   
         {/* Right Column */}
@@ -69,14 +77,6 @@ export default function Home() {
                 alt="Preview"
                 className="max-w-full max-h-[300px] border border-gray-300 rounded"
               />
-            </div>
-          )}
-          {loading && <p>Processing...</p>}
-          {error && <p className="text-red-500">{error}</p>}
-          {extractedText && (
-            <div className="mt-4">
-              <h2 className="text-xl font-medium mb-2">Recognized Text</h2>
-              <pre className="bg-gray-100 p-4 rounded-md">{extractedText}</pre>
             </div>
           )}
         </div>

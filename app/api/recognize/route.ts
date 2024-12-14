@@ -40,6 +40,7 @@ export async function POST(request: Request) {
     formData.append('language', 'eng');
     formData.append('scale', 'true'); 
     formData.append('detectOrientation', 'true');
+    formData.append('OCREngine', '2');
     formData.append('file', new Blob([processedBuffer]), file.name);
 
     const ocrResponse = await fetch(ocrApiUrl, {

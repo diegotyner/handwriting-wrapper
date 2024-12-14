@@ -1,6 +1,5 @@
 'use client'
 
-import Image from "next/image";
 import { useState } from 'react';
 
 export default function Home() {
@@ -34,6 +33,7 @@ export default function Home() {
       setError(false);
     } catch (error) {
       setError(true);
+      console.log(error)
     } finally {
       setLoading(false);
     }

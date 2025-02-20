@@ -10,7 +10,7 @@ export default function Home() {
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [copied, setCopied] = useState("");
   
-  const processImage = async (file: File | Blob) => {
+  const processImage = useCallback(async (file: File | Blob) => {
     const formData = new FormData();
     formData.append('file', file);
 
@@ -34,13 +34,13 @@ export default function Home() {
       setLoading(false)
     } catch (err) {
       setLoading(false)
-      let message = "Error in processing image"
+      const message = "Error in processing image"
       setError(message);
       console.error(err)
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];

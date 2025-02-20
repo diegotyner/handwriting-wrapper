@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Image from "next/image";
 
 export default function Home() {
@@ -9,41 +9,7 @@ export default function Home() {
   const [error, setError] = useState<string>("");
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [copied, setCopied] = useState("");
-
-
-  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    setPreviewImage(URL.createObjectURL(file));
-    await processImage(file);
-  };
-
-  const handlePaste = async (event: ClipboardEvent) => {
-    const items = event.clipboardData?.items;
-    if (!items) return;
-    if (loading) return;
-
-    for (const item of items) {
-      if (item.type.startsWith('image/')) {
-        const blob = item.getAsFile();
-        if (blob) {
-          setPreviewImage(URL.createObjectURL(blob)); // Set pasted image
-          await processImage(blob);
-          return; // Stop after the first image is pasted
-        }
-      }
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener('paste', handlePaste);
-    return () => {
-      document.removeEventListener('paste', handlePaste);
-    };
-  }, []);
-
-
+  
   const processImage = async (file: File | Blob) => {
     const formData = new FormData();
     formData.append('file', file);
@@ -75,6 +41,39 @@ export default function Home() {
       setLoading(false);
     }
   };
+
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setPreviewImage(URL.createObjectURL(file));
+    await processImage(file);
+  };
+
+  const handlePaste = useCallback(async (event: ClipboardEvent) => {
+    const items = event.clipboardData?.items;
+    if (!items) return;
+    if (loading) return;
+
+    for (const item of items) {
+      if (item.type.startsWith('image/')) {
+        const blob = item.getAsFile();
+        if (blob) {
+          setPreviewImage(URL.createObjectURL(blob)); // Set pasted image
+          await processImage(blob);
+          return; // Stop after the first image is pasted
+        }
+      }
+    }
+  }, [loading, processImage]);
+
+  useEffect(() => {
+    document.addEventListener('paste', handlePaste);
+    return () => {
+      document.removeEventListener('paste', handlePaste);
+    };
+  }, []);
+
 
   const handleCopy = () => {
     navigator.clipboard.writeText(extractedText);
@@ -129,9 +128,11 @@ export default function Home() {
           {previewImage && (
             <div className="mb-4">
               <h2 className="text-xl font-medium mb-2">Selected Image</h2>
-              <img
+              <Image
                 src={previewImage}
                 alt="Submitted Image"
+                width={500} 
+                height={300}
                 className="max-w-full max-h-[300px] border border-gray-300 rounded"
               />
             </div>
